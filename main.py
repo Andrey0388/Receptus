@@ -40,7 +40,7 @@ class RegisterWindow(QMainWindow):
                 self.Mm.show()
                 self.close()
             else:
-                self.statusbar.showMessage('Данного пользователя не существует!', 5000)
+                self.statusbar.showMessage('Неверный логин или пароль!', 5000)
             con.close()
         else:
             self.statusbar.showMessage('Имя или пароль пустые!', 5000)
@@ -58,7 +58,7 @@ class RegisterWindow(QMainWindow):
             cur = con.cursor()
             # Только если данного пользователя не существует добавляем и подтверждаем
             result = cur.execute("""SELECT * FROM Users
-                            WHERE Name = ? and Password = ?""", (name, password,)).fetchall()
+                            WHERE Name = ?""", (name,)).fetchall()
             if not result:
                 result1 = cur.execute("""INSERT INTO Users(Name,Password,Keys) VALUES(?,?,'1,2,3,4,5,6')""",
                                       (name, password,))
@@ -66,8 +66,9 @@ class RegisterWindow(QMainWindow):
                 self.Uw = UraWindow()
                 self.Uw.show()
             else:
-                self.statusbar.showMessage('Данный пользователь уже существет!', 5000)
-
+                self.statusbar.showMessage('Этот логин занят!', 5000)
+        else:
+            self.statusbar.showMessage('Имя или пароль пустые!', 5000)
         con.close()
 
 
