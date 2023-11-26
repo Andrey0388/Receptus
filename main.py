@@ -1,6 +1,7 @@
 import io
 import sys
 import sqlite3
+import hashlib
 
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
@@ -19,6 +20,10 @@ class RegisterWindow(QMainWindow):
         name = self.nameEdit.text()
         password = self.passwordEdit.text()
         if name and password:
+            # Хэшируем строки
+            name = hashlib.sha1(name.encode("utf-8")).hexdigest()
+            password = hashlib.sha1(password.encode("utf-8")).hexdigest()
+
             # Открываем базу данных и проверяем соотвествие name и password
             con = sqlite3.connect("recepts_db.sqlite")
             cur = con.cursor()
@@ -45,6 +50,10 @@ class RegisterWindow(QMainWindow):
         password = self.passwordEdit.text()
         # Открываем базу данных и добавляем нового юзера, если имя и пароль не пустые строки
         if name and password:
+            # Хэшируем строки
+            name = hashlib.sha1(name.encode("utf-8")).hexdigest()
+            password = hashlib.sha1(password.encode("utf-8")).hexdigest()
+
             con = sqlite3.connect("recepts_db.sqlite")
             cur = con.cursor()
             # Только если данного пользователя не существует добавляем и подтверждаем
